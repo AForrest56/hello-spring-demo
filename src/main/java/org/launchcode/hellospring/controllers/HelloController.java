@@ -1,11 +1,13 @@
 package org.launchcode.hellospring.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
-@ResponseBody
-@RequestMapping("hello")
 public class HelloController {
 
 //    //Handles request at path /hello
@@ -21,63 +23,61 @@ public class HelloController {
 //        return "Goodbye, Spring!";
 //    }
 //
-//    //Handles request of the form /hello?name=LaunchCode
-//    @RequestMapping(method= {RequestMethod.GET, RequestMethod.POST})
-//   //@ResponseBody
-//    public String helloWithQueryParam(@RequestParam String name){
-//        return "Hello, " + name + "!";
-//    }
-//
-//    //Handles request of form /hello/LaunchCode
-//    @GetMapping("{name}")
-//   // @ResponseBody
-//    public String helloWithPathParam(@PathVariable String name){
-//        return "Hello, " + name + "!";
-//    }
+    //Handles request of the form /hello?name=LaunchCode
+    @RequestMapping(value= "hello", method= {RequestMethod.GET, RequestMethod.POST})
+    public String helloWithQueryParam(@RequestParam String name, Model model){
+        String greeting = "Hello, " + name + "!";
+        model.addAttribute("greeting", greeting);
+        return "hello";
+    }
 
-    @GetMapping("language_greeting")
-    @RequestMapping(method= {RequestMethod.GET, RequestMethod.POST})
+    //Handles request of form /hello/LaunchCode
+    @GetMapping("{name}")
+    @ResponseBody
+    public String helloWithPathParam(@PathVariable String name){
+        return "Hello, " + name + "!";
+    }
+
+ /*   @GetMapping("language-greeting")
+    @RequestMapping( method= {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
     public String languageGreeting(@RequestParam String name, @RequestParam String language){
         if(name == null){
             name = "World";
         }
         return createMessage(name, language);
-    }
+    }*/
 
-    public static String createMessage( String n, String l){
-        if(l.equals("French")){
-            return "Bonjour, " + n + "!";
-        } else if (l.equals("Spanish")){
-            return "Hola, " + n + "!";
-        } else if (l.equals("German")){
-            return "Hallo, " + n + "!";
-        }else if (l.equals("Simlish")){
-            return " Sul Sul, " + n + "!";
+
+
+   /* @ResponseBody
+    public String createMessage( String name, String language){
+        if(language.equals("French")){
+            return "Bonjour, " + name + "!";
+        } else if (language.equals("Spanish")){
+            return "Hola, " + name + "!";
+        } else if (language.equals("German")){
+            return "Hallo, " + name + "!";
+        }else if (language.equals("Simlish")){
+            return "Sul Sul, " + name + "!";
         }else {
-            return "Hello, " + n + "!";
+            return "Hello, " + name + "!";
         }
-    }
+    }*/
 
     @GetMapping("form")
-   // @ResponseBody
     public String helloForm(){
-        return "<!DOCTYPE html>" +
-                "<body>" +
-                "<form action= 'language_greeting' method= 'post'>" + // submit a request to /hello
-                "<input type= 'text' name= 'name'>" +
-                "<label>Language" +
-                "<select name= 'language'>" +
-                "<option value= 'English'>English</option>" +
-                "<option value= 'French'>French</option>" +
-                "<option value= 'Spanish'>Spanish</option>" +
-                "<option value= 'German'>German</option>" +
-                "<option value= 'Simlish'>Simlish</option>" +
-                "</select>" +
-                "</label>" +
-                "<input type= 'submit' value= 'Greet me!'>" +
-                "</form>" +
-                "</body>" +
-                "</html>";
+        return "form";
+    }
+
+    @GetMapping("hello-names")
+    public String helloNames(Model model) {
+        List<String> names = new ArrayList<>();
+        names.add("LaunchCode");
+        names.add("Java");
+        names.add("JavaScript");
+        model.addAttribute("names", names);
+        return "hello-list";
     }
 
 }
